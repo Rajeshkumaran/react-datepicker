@@ -1,34 +1,6 @@
 import React from 'react';
-import styled from 'react-emotion';
 import { monthNames, currentYear, currentMonth } from './utils/constants';
-const PanelContainer = styled('div')`
-  height: 153px;
-  overflow: auto;
-  padding: 5px;
-`;
-const Row = styled('div')`
-  display: flex;
-  flex-direction: column;
-`;
-const Column = styled('div')`
-  display: flex;
-  margin: 12px 0;
-`;
-const ItemWrapper = styled('div')`
-  flex: 1;
-  text-align: center;
-`;
-const Item = styled('span')`
-  list-style-type: none;
-  font-size: 11px;
-  font-weight: 300;
-  line-height: 1.55;
-  padding: 7px;
-  color: #212b35;
-  border-radius: 50%;
-  background: white;
-  cursor: pointer;
-`;
+import panelstyles from './panelstyles.css';
 /*eslint-disable */
 export default class Panel extends React.Component {
   constructor(props) {
@@ -62,8 +34,8 @@ export default class Panel extends React.Component {
     for (let i = 1; i <= iLoop; i++) {
       for (let j = 1; j <= 4; j++)
         itemsArray.push(
-          <ItemWrapper>
-            <Item
+          <div className='panel-item-wrapper'>
+            <span className='panel-item'
               onClick={() =>
                 this.monthClicked({
                   index: (i - 1) * 4 + j - 1,
@@ -71,11 +43,11 @@ export default class Panel extends React.Component {
               }
             >
               {monthNames[counter++].shortName}
-            </Item>
-          </ItemWrapper>,
+            </span>
+          </div>,
         );
 
-      this.monthsToPopulate.push(<Column>{itemsArray}</Column>);
+      this.monthsToPopulate.push(<div className='panel-column'>{itemsArray}</div>);
       itemsArray = [];
     }
   };
@@ -87,12 +59,12 @@ export default class Panel extends React.Component {
     for (let i = 1; i <= iLoop; i++) {
       for (let j = 1; j <= 4; j++)
         itemsArray.push(
-          <ItemWrapper>
-            <Item onClick={this.yearClicked}>{startYear + counter++}</Item>
-          </ItemWrapper>,
+          <div className='panel-item-wrapper'>
+            <span className='panel-item' onClick={this.yearClicked}>{startYear + counter++}</span>
+          </div>,
         );
 
-      this.yearsToPopulate.push(<Column>{itemsArray}</Column>);
+      this.yearsToPopulate.push(<div className='panel-column'>{itemsArray}</div>);
       itemsArray = [];
     }
   };
@@ -105,11 +77,11 @@ export default class Panel extends React.Component {
       this.yearsToPopulate,
     );
     return (
-      <PanelContainer>
-        <Row>
+      <div className='panel-container'>
+        <div className='panel-row'>
           {toShow === 'Month' ? this.monthsToPopulate : this.yearsToPopulate}
-        </Row>
-      </PanelContainer>
+        </div>
+      </div>
     );
   }
 }

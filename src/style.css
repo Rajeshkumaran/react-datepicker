@@ -1,0 +1,120 @@
+.wrapper{
+    position: relative;
+    box-shadow: 0px 3px 3px grey;
+    border: 1px solid #e9e9e9;
+    display: flex;
+    flex-direction: column;
+    width:300px;
+    left:300px;
+    position:relative;
+}
+.container{ 
+    display: flex;
+    align-items: center;
+    height: 34px;
+    padding-left: 5px;
+}
+
+
+.selected-date{
+  flex: 2;
+  font-size: 14px;
+}
+.down-arrow {
+  width: 16px;
+  height: 25px;
+  margin-right: 5px;
+}
+.previous-arrow{
+  flex:1;
+}
+.next-arrow {
+  flex:1;
+}
+
+.calendar-active{
+  display: block;
+  margin-bottom:10px;
+
+}
+.calendar-inactive{
+    display: none;
+}
+.month-and-year{
+  display: flex;
+  font-size: 14px;
+  border-top: 1px solid #e9e9e9;
+  
+  border-bottom: 1px solid #e9e9e9;
+}
+.month-container{
+  flex: 2;
+  text-align: center;
+  display: flex;
+  border-right:1px solid #e9e9e9;
+  align-items: center;
+}
+.month{
+  flex: 1.5;
+  cursor: pointer;
+}
+.year{
+  flex: 1.5;
+  cursor: pointer;
+}
+.year-container{
+  flex: 1;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+.weeks{
+  width: 100%;
+  display: flex;
+  padding: 5px 0;
+}
+.days{
+  padding: 5px 0;
+}
+.row{
+  display: flex;
+  flex-direction: column;
+}
+.column{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  text-align: center;
+  padding: 5px 0;
+}
+.item-wrapper{
+  flex: 1;
+  font-size: 11px;
+  font-weight: 300;
+  line-height: 1.55;
+  
+}
+.day-li{
+  padding: 5px;
+   border-radius: 50%; 
+  list-style-type: none;
+  cursor: pointer;
+  color: #080808;
+  width:15px;
+  display:inline-block;
+}
+.day-li-active{
+  background:#8863fb;
+  color:white;
+}
+
+.invisible{
+  color:#9d9fa4;
+}
+.week-td{
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.55;
+    color: #9d9fa4;
+}

@@ -6,108 +6,10 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled, { css } from 'react-emotion';
-import { getViewPortHeight, smoothScroll } from './utils/common.js';
 import { monthNames, weekDays } from './utils/constants.js';
 import Panel from './Panel.js';
-const Wrapper = styled('div')`
-  position: relative;
-  box-shadow: 0px 3px 3px grey;
-  border: 1px solid #e9e9e9;
-  display: flex;
-  flex-direction: column;
-`;
-const Container = styled('div')`
-  display: flex;
-  align-items: center;
-  height: 34px;
-  padding-left: 5px;
-`;
-const SelectedDate = styled('p')`
-  flex: 2;
-  font-size: 14px;
-`;
-const DownArrow = styled('div')`
-  width: 16px;
-  height: 11px;
-  margin-right: 5px;
-`;
-const PreviousArrow = styled('div')`
-  transform: rotate(90deg);
-`;
-const NextArrow = styled('div')`
-  transform: rotate(-90deg);
-`;
-const Calendar = styled('div')`
-  display: ${props => props.display};
-  height: 210px;
-`;
-const MonthAndYear = styled('div')`
-  display: flex;
-  font-size: 14px;
-  border-top: 1px solid #e9e9e9;
-  padding: 5px 0;
-  border-bottom: 1px solid #e9e9e9;
-`;
-const MonthContainer = styled('div')`
-  flex: 2;
-  text-align: center;
-  display: flex;
-  align-items: center;
-`;
-const Month = styled('p')`
-  flex: 1.5;
-  cursor: pointer;
-  &:hover {
-    background: #e9e9e9;
-  }
-`;
-const Year = styled('p')`
-  flex: 1.5;
-  cursor: pointer;
-  &:hover {
-    background: #e9e9e9;
-  }
-`;
-const YearContainer = styled('div')`
-  flex: 1;
-  text-align: center;
-  display: flex;
-  align-items: center;
-`;
-const Weeks = styled('div')`
-  width: 100%;
-  display: flex;
-  padding: 5px 0;
-`;
-const Days = styled('div')`
-  padding: 5px 0;
-`;
-const Row = styled('div')`
-  display: flex;
-  flex-direction: column;
-`;
-const Column = styled('column')`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  text-align: center;
-  padding: 5px 0;
-`;
-const ItemWrapper = styled('div')`
-  flex: 1;
-  font-size: 11px;
-  font-weight: 300;
-  line-height: 1.55;
-`;
-const DayLi = styled('span')`
-  padding: 7px;
-  border-radius: 50%;
-  list-style-type: none;
-  cursor: pointer;
-  background: ${props => props.background || 'white'};
-  color: ${props => (props.background ? 'white' : '#212b35')};
-`;
+import styles from './style.css'
+
 
 /*eslint-disable */
 function isLeapYear(year) {
@@ -119,15 +21,7 @@ function isLeapYear(year) {
 }
 
 const generateWeeks = weekDays.map(week => (
-  <td
-    className={css`
-      flex: 1;
-      text-align: center;
-      font-size: 12px;
-      line-height: 1.55;
-      color: #9d9fa4;
-    `}
-  >
+  <td  className={'week-td'}>
     {week}
   </td>
 ));
@@ -152,19 +46,12 @@ export default class DatePicker extends React.Component {
     };
   }
 
-  scrollTo = () => {
-    let elementPositionFromTop = this.datePickerRef.getBoundingClientRect().top;
-    let viewPortHeight = getViewPortHeight();
-    let distanceToMove = viewPortHeight - elementPositionFromTop;
-    // 350 includes Calendar height[210px] +  fixed elements at the bottom around 50px
-    if (distanceToMove < 410) smoothScroll(410 - distanceToMove, 400, true);
-  };
+ 
   showCalendarHandle = () => {
     this.setState({
       showCalendar: !this.state.showCalendar,
     });
-    !this.state.showCalendar && this.scrollTo();
-  };
+    };
 
   monthStartingDay = date => {
     console.log('Date here :', date);
@@ -211,16 +98,13 @@ export default class DatePicker extends React.Component {
       column = i === row - 1 ? ((NoOfDays % 4) + startingDay) % 7 : 7;
       for (j = columnLoop; j < column; j++) {
         columns.push(
-          <ItemWrapper>
-            <DayLi
-              background={
-                counter === parseInt(this.state.selectedDay) && '#8863fb'
-              }
+          <div className='item-wrapper'>
+            <span className={['day-li',counter === parseInt(this.state.selectedDay) && 'day-li-active'].join(' ')}
               onClick={this.selectDate}
             >
               {counter++}
-            </DayLi>
-          </ItemWrapper>,
+            </span>
+          </div>,
         );
       }
       if (flag === 0) {
@@ -235,11 +119,11 @@ export default class DatePicker extends React.Component {
         lastRow = columns;
       }
 
-      rows.push(<Column>{columns}</Column>);
+      rows.push(<div className='column'>{columns}</div>);
     }
     this.previousDays(startingDay, firstRow);
     this.nextDays((NoOfDays + startingDay) % 7, lastRow);
-    return <Row>{rows}</Row>;
+    return <div className='row'>{rows}</div>;
   };
   previousDays = (startingDay, firstRow) => {
     let previousMonth =
@@ -248,15 +132,11 @@ export default class DatePicker extends React.Component {
     let i;
     for (i = 0; i < startingDay; i++) {
       firstRow.unshift(
-        <ItemWrapper>
-          <DayLi
-            className={css`
-              color: #9d9fa4;
-            `}
-          >
+        <div className='item-wrapper'>
+          <span className='day-li invisible'>
             {previousMonthLastdate - i}
-          </DayLi>
-        </ItemWrapper>,
+          </span>
+        </div>,
       );
     }
     return firstRow;
@@ -266,15 +146,11 @@ export default class DatePicker extends React.Component {
     if (endDay) {
       for (i = 1; i <= 7 - endDay; i++) {
         lastRow.push(
-          <ItemWrapper>
-            <DayLi
-              className={css`
-                color: #9d9fa4;
-              `}
-            >
+          <div className='item-wrapper'>
+            <span className='day-li invisible'>
               {i}
-            </DayLi>
-          </ItemWrapper>,
+            </span>
+          </div>,
         );
       }
     }
@@ -335,43 +211,44 @@ export default class DatePicker extends React.Component {
   };
   render() {
     return (
-      <Wrapper
+      <div className="wrapper"
         innerRef={ref => (this.datePickerRef = ref)}
         tabIndex={0}
         onBlur={this.mouseLeave}
       >
-        <Container onClick={this.showCalendarHandle}>
-          <SelectedDate>{this.state.selectedDate}</SelectedDate>
-          <DownArrow
+        <div className='container' onClick={this.showCalendarHandle}>
+          <p className='selected-date'>{this.state.selectedDate}</p>
+          <div
             onClick={this.showCalendarHandle}
+            className='down-arrow'
           >&#8964;
-          </DownArrow>
-        </Container>
-        <Calendar display={this.state.showCalendar ? 'block' : 'none'}>
-          <MonthAndYear className="begum--medium">
-            <MonthContainer>
-              <PreviousArrow onClick={this.previousMonth}>&#x22B2;</PreviousArrow>
-              <Month onClick={this.showMonthPanel}>
+          </div>
+        </div>
+        <div className={this.state.showCalendar ? 'calendar-active' : 'calendar-inactive'}>
+          <div className="month-and-year">
+            <div className='month-container'>
+              <div className='previous-arrow' onClick={this.previousMonth}>&#x22B2;</div>
+              <p onClick={this.showMonthPanel}>
                 {monthNames[this.state.currentMonth].name}
-              </Month>
-              <NextArrow onClick={this.nextMonth}>&#x22B3;</NextArrow>
-            </MonthContainer>
-            <YearContainer>
-              <PreviousArrow onClick={this.previousYear}>&#x22B2;</PreviousArrow>
-              <Year onClick={this.showYearPanel}>{this.state.currentYear}</Year>
-              <NextArrow onClick={this.nextYear}>&#x22B3;</NextArrow>
-            </YearContainer>
-          </MonthAndYear>
+              </p>
+              <div className='next-arrow' onClick={this.nextMonth}>&#x22B3;</div>
+            </div>
+            <div className='year-container'>
+              <div className='previous-arrow' onClick={this.previousYear}>&#x22B2;</div>
+              <p className='year' onClick={this.showYearPanel}>{this.state.currentYear}</p>
+              <div className='next-arrow' onClick={this.nextYear}>&#x22B3;</div>
+            </div>
+          </div>
           {!this.state.toShowPanel ? (
             <React.Fragment>
-              <Weeks>{generateWeeks}</Weeks>
+              <div className='weeks'>{generateWeeks}</div>
 
-              <Days>
+              <div className='days'>
                 {this.generateDays(
                   this.state.currentMonth,
                   this.state.currentYear,
                 )}
-              </Days>
+              </div>
             </React.Fragment>
           ) : (
             <Panel
@@ -383,8 +260,8 @@ export default class DatePicker extends React.Component {
               }
             />
           )}
-        </Calendar>
-      </Wrapper>
+        </div>
+      </div>
     );
   }
 }
