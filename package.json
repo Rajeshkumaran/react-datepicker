@@ -1,6 +1,6 @@
 {
-  "name": "react-datepicker",
-  "version": "1.0.0",
+  "name": "rajeshkumaran/react-datepicker",
+  "version": "1.0.1",
   "description": "a small customised react date picker library",
   "license": "MIT",
   "repository": {
